@@ -18,15 +18,27 @@
 Test Factory to make fake objects for testing
 """
 import factory
-from factory.fuzzy import FuzzyChoice, FuzzyDecimal
+from factory.fuzzy import FuzzyChoice
+
 from service.models import Product, Category
 
 
 class ProductFactory(factory.Factory):
-    """Creates fake products for testing"""
+    """Creates fake Product objects for testing."""
 
     class Meta:
-        """Maps factory to data model"""
+        model = Product
+
+    name = factory.Faker("name")
+    description = factory.Faker("text")
+    price = factory.Faker(
+        "pydecimal",
+        left_digits=3,
+        right_digits=2,
+        positive=True
+    )
+    available = factory.Faker("boolean")
+    category = FuzzyChoice(list(Category))
 
         model = Product
 
